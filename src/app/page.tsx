@@ -1,49 +1,71 @@
-'use client';
+import Book from './component/book';
+import { getAllBooks } from './lib/microcms/client';
+import { BookType } from './types/types';
 
-import { useEffect, useState } from 'react';
-import { getProviders, signIn, ClientSafeProvider } from 'next-auth/react';
+// // 疑似データ
+// const books = [
+//   {
+//     id: 1,
+//     title: 'Book 1',
+//     thumbnail: '/thumbnails/discord-clone-udemy.png',
+//     price: 2980,
+//     author: {
+//       id: 1,
+//       name: 'Author 1',
+//       description: 'Author 1 description',
+//       profile_icon: 'https://source.unsplash.com/random/2',
+//     },
+//     content: 'Content 1',
+//     created_at: new Date().toString(),
+//     updated_at: new Date().toString(),
+//   },
+//   {
+//     id: 2,
+//     title: 'Book 2',
+//     thumbnail: '/thumbnails/notion-udemy.png',
+//     price: 1980,
+//     author: {
+//       id: 2,
+//       name: 'Author 2',
+//       description: 'Author 2 description',
+//       profile_icon: 'https://source.unsplash.com/random/3',
+//     },
+//     content: 'Content 2',
+//     created_at: new Date().toString(),
+//     updated_at: new Date().toString(),
+//   },
+//   {
+//     id: 3,
+//     title: 'Book 3',
+//     price: 4980,
+//     thumbnail: '/thumbnails/openai-chatapplication-udem.png',
+//     author: {
+//       id: 3,
+//       name: 'Author 3',
+//       description: 'Author 3 description',
+//       profile_icon: 'https://source.unsplash.com/random/4',
+//     },
+//     content: 'Content 3',
+//     created_at: new Date().toString(),
+//     updated_at: new Date().toString(),
+//   },
+//   // 他の本のデータ...
+// ];
 
-// BuiltInProviderType を使わずに string を代用
-function Login() {
-  const [providers, setProviders] = useState<Record<
-    string,
-    ClientSafeProvider
-  > | null>(null);
-
-  useEffect(() => {
-    const fetchProviders = async () => {
-      const res = await getProviders();
-      setProviders(res);
-    };
-
-    fetchProviders();
-  }, []);
-
+// eslint-disable-next-line @next/next/no-async-client-component
+export default async function Home() {
+  const { contents } = await getAllBooks();
+  // console.log(contents);
   return (
-    <div className="flex items-center justify-center py-16 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          アカウントにログイン
+    <>
+      <main className="flex flex-wrap justify-center items-center md:mt-32 mt-20">
+        <h2 className="text-center w-full font-bold text-3xl mb-2">
+          Book Commerce
         </h2>
-
-        <div className="mt-8 space-y-6">
-          {!providers && <p>読み込み中...</p>}
-
-          {providers &&
-            Object.values(providers).map((provider) => (
-              <div key={provider.id} className="text-center">
-                <button
-                  onClick={() => signIn(provider.id, { callbackUrl: '/' })}
-                  className="bg-gray-900 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded w-full flex items-center justify-center"
-                >
-                  <span>{provider.name} でログイン</span>
-                </button>
-              </div>
-            ))}
-        </div>
-      </div>
-    </div>
+        {contents.map((book: BookType) => (
+          <Book key={book.id} books={book} />
+        ))}
+      </main>
+    </>
   );
 }
-
-export default Login;

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { Noto_Sans_JP } from 'next/font/google';
 import './globals.css';
-import Header from './components/header';
+import Header from './component/header';
+import { NextAuthProvider } from './lib/next-auth/provider';
 
 const notoSansJP = Noto_Sans_JP({
   variable: '--font-geist-sans',
@@ -23,8 +24,10 @@ export default function RootLayout({
       <body
         className={`${notoSansJP.variable} ${notoSansJP.variable} antialiased`}
       >
-        <Header />
-        {children}
+        <NextAuthProvider>
+          <Header />
+          {children}
+        </NextAuthProvider>
       </body>
     </html>
   );
