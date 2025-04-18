@@ -9,6 +9,10 @@ export const client = createClient({
 export const getAllBooks = async () => {
   const allBooks = await client.getList<BookType>({
     endpoint: 'nextpractice',
+    queries: {
+      offset: 0,
+      limit: 10,
+    },
   });
   return allBooks;
 };
