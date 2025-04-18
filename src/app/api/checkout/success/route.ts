@@ -19,7 +19,7 @@ export async function POST(request: Request) {
     if (!existingPurchase) {
       const purchase = await prisma.purchase.create({
         data: {
-          userId: session.client_reference_id,
+          userId: session.client_reference_id || null,
           bookId: session.metadata?.bookId,
         },
       });

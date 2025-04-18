@@ -2,7 +2,7 @@ import { getDetailBook } from '@/app/lib/microcms/client';
 import Image from 'next/image';
 import React from 'react';
 
-const DetailBook = async ({ params }: { params: { id: string } }) => {
+const DetailBook = async ({ params }) => {
   const paramsId = params.id;
   const book = await getDetailBook(paramsId); //SSRで呼び出されている
   // console.log(params.id);

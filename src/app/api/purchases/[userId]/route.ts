@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/lib/prisma';
 
 // 購入履歴検索API
-export async function GET(
-  request: NextRequest,
-  context: { params: { userId: string } }
-) {
+export async function GET(req: NextRequest, context) {
   const userId = context.params.userId;
   try {
     const purchases = await prisma.purchase.findMany({
