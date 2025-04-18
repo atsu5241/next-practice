@@ -12,3 +12,12 @@ export const getAllBooks = async () => {
   });
   return allBooks;
 };
+
+export const getDetailBook = async (contentId: string) => {
+  const detaliBook = await client.getListDetail<BookType>({
+    endpoint: 'nextpractice',
+    contentId,
+  });
+
+  return detaliBook;
+};

@@ -1,19 +1,20 @@
 'use client';
 
 import Image from 'next/image';
-import { BookType } from '../types/types';
+import { BookType, User } from '../types/types';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 type BookProps = {
   books: BookType;
+  isPurchased: boolean;
 };
-// eslint-disable-next-line react/display-name
-const Book = ({ books }: BookProps) => {
+
+const Book = ({ books, isPurchased }: BookProps) => {
   const [showModal, setShowModal] = useState(false);
   const { data: session } = useSession();
-  const user: any = session?.user;
+  const user = session?.user as User;
   const router = useRouter();
 
   const startCheckout = async () => {
@@ -26,8 +27,8 @@ const Book = ({ books }: BookProps) => {
           body: JSON.stringify({
             title: books.title,
             price: books.price,
-            user: user.id,
-            book: books.id,
+            userId: user.id,
+            bookId: books.id,
           }),
         }
       );
@@ -46,7 +47,11 @@ const Book = ({ books }: BookProps) => {
   };
 
   const handlePurchaseClick = () => {
-    setShowModal(true);
+    if (isPurchased) {
+      alert('その商品は購入済みです');
+    } else {
+      setShowModal(true);
+    }
   };
 
   const handleCancel = () => {
