@@ -1,13 +1,12 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import prisma from '@/app/lib/prisma';
 
 // 購入履歴検索API
 export async function GET(
-  request: Request,
-  { params }: { params: { userId: string } }
+  request: NextRequest,
+  context: { params: { userId: string } }
 ) {
-  const userId = params.userId;
-
+  const userId = context.params.userId;
   try {
     const purchases = await prisma.purchase.findMany({
       where: { userId: userId },
